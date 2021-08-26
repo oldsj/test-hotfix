@@ -1,0 +1,25 @@
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize, closed ]
+env:
+  TAG: ${{ github.event.pull_request.head.sha }}
+jobs:
+  
+  get-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get current commit
+        run: echo $TAG
+
+      - name: get the previous (pr) commit
+        if: github.event.pull_request.merged == true
+        run: |
+          echo "PR commit:"
+          echo "$GITHUB_CONTEXT"| jq '.event.commits[].id' | tail -2 | head -1 |sed 's/\"//g'
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+      - name: get the merge commit
+        if: github.event.pull_request.merged == true
+        # run: echo "Merge commit is: $TAG"
+        run: |
+          echo "merge commit: $GITHUB_SHA"
