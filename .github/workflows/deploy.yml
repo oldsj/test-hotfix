@@ -21,4 +21,5 @@ jobs:
       - name: get the merge commit
         if: github.event.pull_request.merged == true
         # run: echo "Merge commit is: $TAG"
-        run: echo "merge commit: $GITHUB_SHA"
+        run: |
+          echo "merge commit: $GITHUB_SHA"
