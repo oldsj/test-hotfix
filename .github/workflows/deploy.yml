@@ -12,4 +12,4 @@ jobs:
       - name: retag container on PR merge
         # if: github.event.pull_request.merged == true
         # run: echo "Merge commit is: $TAG"
-        run: echo "Commits: ${{ github.events.commits }}"
+        run: echo "Commits: ${{ github.event.commits }}"
