@@ -1,0 +1,11 @@
+on: pull_request
+env:
+  TAG: ${{ github.event.pull_request.head.sha }}
+jobs:
+  
+  get-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo commit
+        run: echo $TAG
+
