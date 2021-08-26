@@ -1,4 +1,6 @@
-on: pull_request
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize, closed ]
 env:
   TAG: ${{ github.event.pull_request.head.sha }}
 jobs:
@@ -6,15 +8,17 @@ jobs:
   get-commit:
     runs-on: ubuntu-latest
     steps:
-      - name: echo commit
+      - name: get current commit
         run: echo $TAG
 
-      # - name: retag container on PR merge
-      #   # if: github.event.pull_request.merged == true
-      #   # run: echo "Merge commit is: $TAG"
-      #   run: echo "Commits: ${{ github.event.commits }}"
-      - name: get the previous sha
+      - name: get the previous (pr) commit
+        if: github.event.pull_request.merged == true
         run: |
+          echo "PR commit:"
           echo "$GITHUB_CONTEXT"| jq '.event.commits[].id' | tail -2 | head -1 |sed 's/\"//g'
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+      - name: get the merge commit
+        if: github.event.pull_request.merged == true
+        # run: echo "Merge commit is: $TAG"
+        run: echo "merge commit: $GITHUB_SHA"
