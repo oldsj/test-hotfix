@@ -2,24 +2,16 @@ on:
   pull_request:
     types: [ opened, reopened, synchronize, closed ]
 env:
-  TAG: ${{ github.event.pull_request.head.sha }}
+  PR_TAG: ${{ github.event.pull_request.head.sha }}
 jobs:
   
-  get-commit:
+  # find the image in the repository tagged with this PR's commit
+  # add the merge commit as an additional tag for a later deploy
+  tag-image:
     runs-on: ubuntu-latest
     steps:
-      - name: get current commit
-        run: echo $TAG
-
-      - name: get the previous (pr) commit
-        if: github.event.pull_request.merged == true
-        run: |
-          echo "PR commit:"
-          echo "$GITHUB_CONTEXT"| jq '.event.commits[].id' | tail -2 | head -1 |sed 's/\"//g'
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-      - name: get the merge commit
+      - name: Add the merge commit tag
         if: github.event.pull_request.merged == true
         # run: echo "Merge commit is: $TAG"
         run: |
-          echo "merge commit: $GITHUB_SHA"
+          echo "Adding tag $GITHUB_SHA to the container image tagged with $PR_TAG"
