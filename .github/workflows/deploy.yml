@@ -9,7 +9,12 @@ jobs:
       - name: echo commit
         run: echo $TAG
 
-      - name: retag container on PR merge
-        # if: github.event.pull_request.merged == true
-        # run: echo "Merge commit is: $TAG"
-        run: echo "Commits: ${{ github.event.commits }}"
+      # - name: retag container on PR merge
+      #   # if: github.event.pull_request.merged == true
+      #   # run: echo "Merge commit is: $TAG"
+      #   run: echo "Commits: ${{ github.event.commits }}"
+      - name: get the previous sha
+        run: |
+          echo "$GITHUB_CONTEXT"| jq '.event.commits[].id' | tail -2 | head -1 |sed 's/\"//g'
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
