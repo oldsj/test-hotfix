@@ -4,7 +4,6 @@ on:
 env:
   PR_COMMIT_TAG: ${{ github.event.pull_request.head.sha }}
 jobs:
-  
   # find the image in the repository tagged with this PR's commit
   # add the merge commit as an additional tag for a later deploy
   tag-image:
