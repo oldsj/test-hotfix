@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Lookup the existing container image
-        if: github.event.pull_request.merged == true
         run: |
           echo "Pulling container image tagged with PR commit $PR_COMMIT_TAG"
 
