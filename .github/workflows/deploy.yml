@@ -3,7 +3,6 @@ on:
     types: [ opened, reopened, synchronize, closed ]
 env:
   PR_COMMIT_TAG: ${{ github.event.pull_request.head.sha }}
-  MERGE_COMMIT_TAG: ${{ github.sha }}
 jobs:
   
   # find the image in the repository tagged with this PR's commit
@@ -11,8 +10,14 @@ jobs:
   tag-image:
     runs-on: ubuntu-latest
     steps:
+      - name: Lookup the existing container image
+        if: github.event.pull_request.merged == true
+        run: |
+          echo "Pulling container image tagged with PR commit $PR_COMMIT_TAG"
+
       - name: Add the merge commit tag
         if: github.event.pull_request.merged == true
-        # run: echo "Merge commit is: $TAG"
+        env:
+          MERGE_COMMIT_TAG: ${{ github.sha }}
         run: |
           echo "Adding merge commit tag $MERGE_COMMIT_TAG to the container image tagged with PR commit $PR_COMMIT_TAG"
