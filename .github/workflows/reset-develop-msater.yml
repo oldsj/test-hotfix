@@ -11,7 +11,9 @@ jobs:
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v3
+        with:
+          ref: develop
       - name: Reset and push branch
         run: |
-          git branch -f develop master
+          git reset --hard develop master
           git push -f
