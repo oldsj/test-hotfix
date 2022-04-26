@@ -9,11 +9,12 @@ jobs:
     name: Reset develop branch to master
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout this repo
+      - name: Reset develop
         uses: actions/checkout@v3
         with:
           ref: develop
-      - name: Reset and push branch
         run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git reset --hard master
           git push -f
