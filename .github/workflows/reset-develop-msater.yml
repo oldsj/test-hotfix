@@ -1,0 +1,17 @@
+name: reset-develop-master
+on:
+  workflow_dispatch:
+  schedule:
+    # 8am ET Saturdays
+    - cron: "0 12 * * SAT"
+jobs:
+  reset-develop:
+    name: Reset develop branch to master
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+      - name: Reset and push branch
+        run: |
+          git branch -f develop master
+          git push -f
