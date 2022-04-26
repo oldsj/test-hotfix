@@ -15,5 +15,5 @@ jobs:
           ref: develop
       - name: Reset and push branch
         run: |
-          git reset --hard develop master
+          git reset --hard master
           git push -f
